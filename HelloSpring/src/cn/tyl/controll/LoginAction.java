@@ -23,6 +23,7 @@ public class LoginAction implements Controller{
 		return moView;
 	}
 	//测试
+	//FZ1测试	
 	public void text()
 { Sysout.out.println("123");	
 }
