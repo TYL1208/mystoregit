@@ -22,6 +22,7 @@ public class LoginAction implements Controller{
 		moView.addObject("msg", mess);
 		return moView;
 	}
+	//测试
 	public void text()
 { Sysout.out.println("123");	
 }
