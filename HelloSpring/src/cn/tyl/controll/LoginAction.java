@@ -22,5 +22,6 @@ public class LoginAction implements Controller{
 		moView.addObject("msg", mess);
 		return moView;
 	}
-	
+	public void text()
+{ Sysout.out.println("123");	
 }
