@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbz.BookStore.dao.ItemDao" >
+
+<!-- 保存用户加入购物车的信息 -->
+
+	<insert id="savaItem" parameterType="com.itbz.BookStore.po.Item">
+	insert into item(uid,bid,createdate,count,price,totalprice,statu) 
+     values(#{uid},#{bid},#{createdate},#{count},#{price},#{totalprice},#{status})
+	</insert>
+	
+	<!-- 配置返回结果映射 -->
+	<resultMap type="com.itbz.BookStore.po.Item" id="ite">
+		<id property="id" column="id" />
+		<result property="createdate" column="createdate"/>
+		<result property="count" column="count"/>
+		<result property="totalprice" column="totalprice"/>
+		<association property="book" javaType="com.itbz.BookStore.po.Book">
+				<result property="price" column="price"/>
+				<result property="bookname" column="bookname"/>
+				<result property="images" column="images"/>
+		</association>
+	</resultMap>
+<!-- 查询所有加入购物车的订单 -->	
+	<select id="checkAllItems" resultMap="ite">
+		select i.id,i.createdate,i.count,b.price,i.totalprice,b.bookname,b.images from item i  join book b on i.bid=b.id
+        where i.statu=0 and i.uid=#{uid}
+	</select>
+	
+	<!-- 修该订单状态 -->
+	<update id="updataItemsStatus">
+	  update item set statu=1 where id in <foreach collection="intid" open="("  close=")" separator=","
+	  item="id">#{id}</foreach>
+	</update>
+	<!-- 查询bookid -->
+	<select id="checkItemsByids" resultType="int">
+		select i.bid from item i where i.id in <foreach collection="intids" open="("  close=")" separator=","
+	  item="id">#{id}</foreach>
+		
+	</select>
+	<!-- 查询我的订单 -->
+		<select id="checkMyItem" resultMap="ite">
+		select i.id,i.createdate,i.count,b.price,i.totalprice,b.bookname,b.images from item i  join book b on i.bid=b.id
+        where i.statu=1 and i.uid=#{uid}
+	</select>
+</mapper>

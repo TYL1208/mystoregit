@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbz.BookStore.dao.BookDao" >
+
+<!-- 查询所有书籍 -->
+
+	<select id="checkAllBooks" parameterType="com.itbz.BookStore.po.Book" resultType="com.itbz.BookStore.po.Book">
+	    select b.id,b.bookname,b.price,b.images,b.stock from book b
+	</select> 
+	
+	<select id="checkBookById" resultType="com.itbz.BookStore.po.Book">
+		select b.id,b.bookname,b.price,b.images,b.stock from book b where b.id=#{id}
+	</select>
+	<!--修改库存  -->
+	<update id="upBookStock">
+		update book set stock=#{stock} where id=#{id}
+	</update>
+</mapper>

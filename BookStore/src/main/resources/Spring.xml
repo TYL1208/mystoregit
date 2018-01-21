@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:p="http://www.springframework.org/schema/p"
+     xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/context 
+	 http://www.springframework.org/schema/context/spring-context.xsd	
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"> 
+     
+     <!-- 连接数据库配置文件 -->
+     <bean name="properties"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:config.properties"></property>
+	</bean>
+	
+    <!-- 数据库连接配置 -->
+     <bean id='dataSource' class="org.apache.commons.dbcp.BasicDataSource" >
+       <property name="driverClassName" value="${DriverClass}"/>
+        <property name="url" value="${JdbcUrl}"/>
+        <property name="username" value="${User}"/>
+        <property name="password" value="${Password}"/>
+        <property name="initialSize" value="0"></property>
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="20"></property>
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="20"></property>
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="1"></property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="60000"></property>
+     </bean>
+     <!-- 创建sqlsesstionfactor工厂 -->
+     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+     <property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描映射文件-->
+		<!--  <property name="mapperLocations" value="classpath:com/itbz/SMWord/dao/UserDao.xml"></property>  -->
+     </bean>
+     
+     <!-- 扫描dao层接口,自动执行数据访问层 -->
+     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.itbz.BookStore.dao"></property>
+     	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+     </bean>
+     
+     <!-- 事务管理 -->
+     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+     <property name="dataSource" ref="dataSource"></property>
+     </bean>
+     <tx:annotation-driven transaction-manager="txManager" />
+     
+     </beans>

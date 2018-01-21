@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itbz.BookStore.dao.UserDao" >
+
+<!-- 查询用户 -->
+    <resultMap type="com.itbz.BookStore.po.Users" id="user">
+    	<id property="id" column="id"/> 
+    	<result property="name" column="name"/>
+    	<result property="password" column="password"/>
+    	<!-- 用户中的消息 -->
+    </resultMap>
+	<select id="checkUser" parameterType="com.itbz.BookStore.po.Users" resultMap="user">
+	    select u.id,u.name,u.password from users u where u.name like #{name} 
+	</select> 
+	<!-- 用户注册,保存用户信息 -->
+	<insert id="savaUsers" parameterType="com.itbz.BookStore.po.Users">
+		insert into users(name,password) values(#{name} ,#{password} )
+	</insert>
+</mapper>
